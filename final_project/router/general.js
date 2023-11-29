@@ -13,25 +13,48 @@ public_users.post("/register", (req,res) => {
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  return res.send(JSON.stringify(books, null,4));
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    return res.send(books[req.params.isbn]);
  });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  //return res.send(Object.values(books).filter(book=> book.author === req.params.author));
+    let result = {booksByAuthor:[]}
+    keys = Object.keys(books);
+    keys.forEach(key => {
+        if (books[key].author === req.params.author){
+            result.booksByAuthor.push({
+                isbn:key,
+                title:books[key].title,
+                reviews:books[key].reviews
+            })
+        }
+    });
+    res.send(result);
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  let result = {booksByTitle:[]}
+    keys = Object.keys(books);
+    keys.forEach(key => {
+        if (books[key].title === req.params.title){
+            result.booksByTitle.push({
+                isbn:key,
+                author:books[key].author,
+                reviews:books[key].reviews
+            })
+        }
+    });
+    res.send(result);
 });
 
 //  Get book review
